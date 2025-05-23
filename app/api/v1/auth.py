@@ -25,5 +25,5 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Credenciais inválidas")
     return {
         "access_token": create_access_token({"sub": user.username}),
-        "refresh_token": create_refresh_token({"sub": user.username}),
+        "refresh_token": create_refresh_token({"sub": user.username})
 }
