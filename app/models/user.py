@@ -1,5 +1,10 @@
-from sqlalchemy import Column, Integer, String
-from app.db.base import Base
+from app.db import Base
+from sqlalchemy import Column, Integer, String, Enum as PgEnum
+import enum
+
+class UserRole(str, enum.Enum):
+    ADMIN = "admin"
+    USER = "user"
 
 class User(Base):
     __tablename__ = "users"
@@ -8,3 +13,4 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    role = Column(PgEnum(UserRole), default=UserRole.USER)

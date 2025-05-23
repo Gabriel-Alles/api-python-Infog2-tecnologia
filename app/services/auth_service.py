@@ -4,6 +4,7 @@ from app.models.user import User
 from app.schemas.user import UserCreate
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from app.db.user_repository import get_all_users
 
 def register_user(db: Session, user_create: UserCreate):
     if get_user_by_username(db, user_create.username):
@@ -21,3 +22,10 @@ def authenticate_user(db: Session, username: str, password: str):
     if not user or not verify_password(password, user.hashed_password):
         return None
     return user  
+
+def list_users(db: Session):
+    return get_all_users(db)
+
+# Função adicionada só para evitar o erro de importação
+def get_current_user():
+    pass

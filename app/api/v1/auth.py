@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.db.session import SessionLocal
-from app.services.auth_service import authenticate_user, register_user
-from app.schemas.user import UserCreate, UserLogin, Token
+from app.db.database import SessionLocal
+from app.services.auth_service import authenticate_user, register_user, list_users
+from app.schemas.user import UserCreate, UserLogin, Token, UserResponse
 from app.core.security import create_access_token, create_refresh_token
+from app.core.dependencies import require_admin
 
 router = APIRouter()
 
@@ -26,4 +27,8 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
     return {
         "access_token": create_access_token({"sub": user.username}),
         "refresh_token": create_refresh_token({"sub": user.username})
-}
+    }
+
+@router.get("/admin/users", response_model=list[UserResponse])
+def get_all_users(current_user=Depends(require_admin)):
+    return list_users()
