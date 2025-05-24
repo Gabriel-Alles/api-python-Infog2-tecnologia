@@ -13,4 +13,4 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    role = Column(PgEnum(UserRole), default=UserRole.USER)
+    role = Column(PgEnum(UserRole), default=UserRole.ADMIN)
