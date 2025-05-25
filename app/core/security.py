@@ -21,6 +21,13 @@ def get_db():
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 bearer_scheme = HTTPBearer()
 
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+    
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
 
